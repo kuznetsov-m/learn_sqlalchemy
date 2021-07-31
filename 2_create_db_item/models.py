@@ -1,28 +1,28 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, BigInteger, String, Date, DateTime, Boolean, Float
 from sqlalchemy.dialects.postgresql import UUID
+# from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
 import uuid
 
 Base = declarative_base()
 
-class Candels(Base):
+class Ticker(Base):
+    __tablename__ = 'tickers'
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
+    name = Column(String)
+
+class Candel(Base):
     __tablename__ = 'candels'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    value = Column(Float, nullable=True)
-
-    # def __init__(self, value):
-    #     self.open = open
-    #     self.close = close
-    #     self.high = high
-    #     self.low = low
-    #     self.value = value
-    #     self.volume = volume
-    #     self.begin = begin
-    #     self.end = end
+    ticker_id = Column(UUID(as_uuid=True), ForeignKey(Ticker.id, ondelete='SET NULL'))
+    value = Column(Float, nullable=False)
 
 class Model(Base):
     __tablename__ = 'models'
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
-    tiker = Column(String, nullable=False)
+    name = Column(String, nullable=False)
+    ticker_id = Column(UUID(as_uuid=True), ForeignKey(Ticker.id, ondelete='SET NULL'))
