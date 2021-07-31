@@ -1,0 +1,5 @@
+python-dotenv==0.15.0
+
+# PSQL
+SQLAlchemy==1.3.23
+psycopg2==2.8.6
